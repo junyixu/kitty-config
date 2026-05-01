@@ -1,0 +1,44 @@
+
+new_tab
+layout stack
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"opts": {}, "class": "Stack", "all_windows": {"active_group_idx": 1, "active_group_history": [7, 1], "window_groups": [{"id": 1, "window_ids": [1]}, {"id": 27, "window_ids": [45]}]}}
+cd /home/junyi/Sync/JupyterNotes
+
+launch 'kitty-unserialize-data={"id": 1, "cmd_at_shell_startup": "nvi MyCircle.jl"}'
+launch 'kitty-unserialize-data={"id": 45}'
+focus
+
+new_tab claude code
+layout tall:bias=70;full_size=1
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"main_bias": [0.7, 0.30000000000000004], "biased_map": {}, "opts": {"full_size": 1, "bias": 70, "mirrored": "n"}, "class": "Tall", "all_windows": {"active_group_idx": 0, "active_group_history": [3], "window_groups": [{"id": 3, "window_ids": [3]}]}}
+cd /home/junyi/.config/nvim
+
+launch 'kitty-unserialize-data={"id": 3, "cmd_at_shell_startup": "claude"}'
+focus
+
+new_tab
+layout tall:bias=70;full_size=1
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"main_bias": [0.7, 0.30000000000000004], "biased_map": {}, "opts": {"full_size": 1, "bias": 70, "mirrored": "n"}, "class": "Tall", "all_windows": {"active_group_idx": 0, "active_group_history": [29], "window_groups": [{"id": 29, "window_ids": [47]}]}}
+cd /home/junyi
+
+launch 'kitty-unserialize-data={"id": 47}'
+focus
+
+focus_tab 2
+
+
+new_os_window
+
+new_tab f2
+layout tall:bias=70;full_size=1
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"main_bias": [0.5446637426900586, 0.4553362573099415], "biased_map": {}, "opts": {"full_size": 1, "bias": 70, "mirrored": "n"}, "class": "Tall", "all_windows": {"active_group_idx": 0, "active_group_history": [25, 12], "window_groups": [{"id": 12, "window_ids": [28]}]}}
+cd /home/junyi
+
+launch 'kitty-unserialize-data={"id": 28}' /usr/bin/nvim /home/junyi/.config/kitty/kitty.conf
+focus
+
+focus_tab 0

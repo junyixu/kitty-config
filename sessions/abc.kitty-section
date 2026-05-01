@@ -1,0 +1,23 @@
+
+new_tab making_animations_makie.jl
+layout tall:bias=70;full_size=1
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"main_bias": [0.7, 0.30000000000000004], "biased_map": {}, "opts": {"full_size": 1, "bias": 70, "mirrored": "n"}, "class": "Tall", "all_windows": {"active_group_idx": 0, "active_group_history": [3, 40, 46, 54, 57, 68, 70, 74, 76, 11, 9, 84, 86, 93, 97, 111, 112, 113, 137, 98, 83, 2, 139, 145], "window_groups": [{"id": 2, "window_ids": [2]}, {"id": 139, "window_ids": [122]}, {"id": 145, "window_ids": [90]}, {"id": 98, "window_ids": [107]}]}}
+cd /home/junyi/WorkSpace/test_Makie/makie_anim_youtube
+
+launch 'kitty-unserialize-data={"id": 2, "cmd_at_shell_startup": "nvi making_animations_makie.jl"}'
+focus
+launch 'kitty-unserialize-data={"id": 122, "cmd_at_shell_startup": "ccc glm"}'
+launch 'kitty-unserialize-data={"id": 90, "cmd_at_shell_startup": "ccc glm"}' --cwd=/home/junyi/WorkSpace/test_Makie
+launch 'kitty-unserialize-data={"id": 107, "cmd_at_shell_startup": "ccc glm -c"}' --cwd=/home/junyi/WorkSpace/test_Makie
+
+new_tab
+layout tall:bias=70;full_size=1
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"main_bias": [0.7, 0.30000000000000004], "biased_map": {}, "opts": {"full_size": 1, "bias": 70, "mirrored": "n"}, "class": "Tall", "all_windows": {"active_group_idx": 0, "active_group_history": [157], "window_groups": [{"id": 157, "window_ids": [150]}]}}
+cd /home/junyi/WorkSpace/test_Makie/makie_anim_youtube
+
+launch 'kitty-unserialize-data={"id": 150}'
+focus
+
+focus_tab 0
