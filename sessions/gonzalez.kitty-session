@@ -1,0 +1,55 @@
+
+new_tab ✳ Review kitty config and suggest shortcuts
+layout tall:bias=70;full_size=1
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"main_bias": [0.7, 0.30000000000000004], "biased_map": {}, "opts": {"full_size": 1, "bias": 70, "mirrored": "n"}, "class": "Tall", "all_windows": {"active_group_idx": 0, "active_group_history": [31, 51], "window_groups": [{"id": 31, "window_ids": [34]}, {"id": 51, "window_ids": [67]}]}}
+cd /home/junyi/.config/kitty
+
+launch 'kitty-unserialize-data={"id": 34, "cmd_at_shell_startup": "claude"}'
+focus
+launch 'kitty-unserialize-data={"id": 67}'
+
+new_tab nvi kitty.conf
+layout tall:bias=70;full_size=1
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"main_bias": [0.7, 0.30000000000000004], "biased_map": {}, "opts": {"full_size": 1, "bias": 70, "mirrored": "n"}, "class": "Tall", "all_windows": {"active_group_idx": 0, "active_group_history": [52, 54, 57], "window_groups": [{"id": 52, "window_ids": [70]}, {"id": 54, "window_ids": [73]}, {"id": 57, "window_ids": [79]}]}}
+cd /home/junyi/.config/kitty
+
+launch 'kitty-unserialize-data={"id": 70, "cmd_at_shell_startup": "fg"}'
+focus
+launch 'kitty-unserialize-data={"id": 73}'
+launch 'kitty-unserialize-data={"id": 79}'
+
+focus_tab 1
+
+
+new_os_window
+
+new_tab Gonzalez-diagnostics
+layout tall:bias=70;full_size=1
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"main_bias": [0.5229166666666665, 0.4770833333333336], "biased_map": {}, "opts": {"full_size": 1, "bias": 70, "mirrored": "n"}, "class": "Tall", "all_windows": {"active_group_idx": 0, "active_group_history": [2, 1], "window_groups": [{"id": 1, "window_ids": [1]}]}}
+cd /home/junyi/WorkSpace/landau_collision/worktrees/Gonzalez-diagnostics
+
+launch 'kitty-unserialize-data={"id": 1, "cmd_at_shell_startup": "fg"}'
+focus
+
+new_tab Anderson-fix
+layout tall:bias=70;full_size=1
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"main_bias": [0.7, 0.30000000000000004], "biased_map": {}, "opts": {"full_size": 1, "bias": 70, "mirrored": "n"}, "class": "Tall", "all_windows": {"active_group_idx": 0, "active_group_history": [7], "window_groups": [{"id": 7, "window_ids": [9]}]}}
+cd /home/junyi/WorkSpace/landau_collision/worktrees/Gonzalez-anderson-fix
+
+launch 'kitty-unserialize-data={"id": 9, "cmd_at_shell_startup": "nvi"}'
+focus
+
+new_tab
+layout tall:bias=70;full_size=1
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"main_bias": [0.7, 0.30000000000000004], "biased_map": {}, "opts": {"full_size": 1, "bias": 70, "mirrored": "n"}, "class": "Tall", "all_windows": {"active_group_idx": 0, "active_group_history": [6], "window_groups": [{"id": 6, "window_ids": [8]}]}}
+cd /home/junyi/WorkSpace/landau_collision/worktrees/Gonzalez-diagnostics
+
+launch 'kitty-unserialize-data={"id": 8}'
+focus
+
+focus_tab 2
