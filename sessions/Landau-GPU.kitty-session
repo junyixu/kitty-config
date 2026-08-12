@@ -1,0 +1,20 @@
+
+new_tab ben: neovim
+layout tall:bias=70;full_size=1
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"main_bias": [0.7, 0.30000000000000004], "biased_map": {}, "opts": {"full_size": 1, "bias": 70, "mirrored": "n"}, "class": "Tall", "all_windows": {"active_group_idx": 0, "active_group_history": [4], "window_groups": [{"id": 4, "window_ids": [5]}]}}
+cd /home/junyi
+
+launch 'kitty-unserialize-data={"id": 5, "cmd_at_shell_startup": ["/usr/bin/kitten", "ssh", "--kitten=env=KITTY_SI_RUN_COMMAND_AT_STARTUP=nvi", "--kitten=cwd=/home/xujunyi/WorkSpace/iso-plainmid-probe-rclone", "--kitten=env=KITTY_WINDOW_ID=4", "--kitten=env=KITTY_WINDOW_ID=5", "benbr"]}'
+focus
+
+new_tab ben: claude-code
+layout tall:bias=70;full_size=1
+enabled_layouts tall:bias=70;full_size=1,stack
+set_layout_state {"main_bias": [0.7, 0.30000000000000004], "biased_map": {}, "opts": {"full_size": 1, "bias": 70, "mirrored": "n"}, "class": "Tall", "all_windows": {"active_group_idx": 0, "active_group_history": [3], "window_groups": [{"id": 3, "window_ids": [4]}]}}
+cd /home/junyi
+
+launch 'kitty-unserialize-data={"id": 4, "cmd_at_shell_startup": ["/usr/bin/kitten", "ssh", "--kitten=env=KITTY_SI_RUN_COMMAND_AT_STARTUP=zmx attach claude-code", "--kitten=cwd=/home/xujunyi/WorkSpace/iso-plainmid-probe-rclone", "--kitten=env=KITTY_WINDOW_ID=4", "benbr"]}'
+focus
+
+focus_tab 0
