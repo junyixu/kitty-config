@@ -22,6 +22,8 @@
 #
 # Re-saving this session over itself reverts both — re-apply by hand.
 
+new_os_window
+
 new_tab ben: neovim
 layout tall:bias=70;full_size=1
 enabled_layouts tall:bias=70;full_size=1,stack
