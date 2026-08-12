@@ -102,7 +102,40 @@ precmd_functions=(${precmd_functions:#_ksi_deferred_init} _ksi_deferred_init)
 再次 `save_as_session` 覆盖同一文件，会把上面两处手改**全部退回**成 kitty 的默认写法，需要重新改。
 新增 tab 也一样是旧格式。
 
-## 3. `ControlSocket ... already exists, disabling multiplexing`
+## 3. `new_window_with_cwd` 会把远端启动命令一起继承
+
+在跑着 `nvi` 的 ssh 窗口里按 `kitty_mod+enter`，新窗口又是 `nvi` 而不是 zsh。
+
+原因：对 ssh 窗口，`window.py:177 modify_argv_for_launch_with_cwd` 把整条 kitten ssh cmdline
+**原样复制**，只替换 cwd 和 server args：
+
+```python
+argv[:] = ssh_kitten_cmdline          # 含 --kitten=env=KITTY_SI_RUN_COMMAND_AT_STARTUP=nvi ...
+set_cwd_in_cmdline(reported_cwd, argv)
+set_server_args_in_cmdline(server_args, argv, allocate_tty=not run_shell)
+```
+
+试过在命令里加 clone 判据 `[[ -z "$KITTY_IS_CLONE_LAUNCH" ]] && nvi ...`：**无效**，
+探针显示远端两次都是 `clone=[] strat=[]`，kitty 的 clone 标记不会传到远端。
+
+有效做法：给绑定加显式命令，`server_args` 非空 → 远端 bootstrap 走
+
+```sh
+unset KITTY_SHELL_INTEGRATION; exec "$login_shell" -c 'zsh'
+```
+
+krcs 不再被 eval：
+
+```
+map kitty_mod+enter new_window_with_cwd zsh
+```
+
+代价：该窗口没有 kitty shell integration（`precmd_functions` 里 `_ksi` 计数为 0），不上报 OSC 7 cwd，
+从它再按 `kitty_mod+enter` 就拿不到远端 cwd 了。想用
+`env KITTY_SHELL_INTEGRATION=enabled ZDOTDIR=...` 补回来会失败（`$HOME` 不展开，掉回 grml prompt），
+不要走这条路。
+
+## 4. `ControlSocket ... already exists, disabling multiplexing`
 
 良性，可忽略。
 
@@ -124,7 +157,7 @@ share_connections no
 
 复用也随之关闭；且 `forward_remote_control=yes` 依赖 ControlMaster，与之互斥。
 
-## 4. 调试手法备忘
+## 5. 调试手法备忘
 
 - 解析 session 文件而不真的开窗：
 
