@@ -118,22 +118,63 @@ set_server_args_in_cmdline(server_args, argv, allocate_tty=not run_shell)
 试过在命令里加 clone 判据 `[[ -z "$KITTY_IS_CLONE_LAUNCH" ]] && nvi ...`：**无效**，
 探针显示远端两次都是 `clone=[] strat=[]`，kitty 的 clone 标记不会传到远端。
 
-有效做法：给绑定加显式命令，`server_args` 非空 → 远端 bootstrap 走
+唯一能挡住的做法是给绑定加显式命令（`new_window_with_cwd zsh`）：`server_args` 非空 → 远端 bootstrap
+不走 `exec_login_shell`，改走带命令的分支。
+
+### 为什么带命令就没有 shell integration
+
+`shell-integration/ssh/bootstrap.sh` 末尾是两条互斥分支：
 
 ```sh
-unset KITTY_SHELL_INTEGRATION; exec "$login_shell" -c 'zsh'
+prepare_for_exec
+# If a command was passed to SSH execute it here
+EXEC_CMD          # 带命令时替换成: unset KITTY_SHELL_INTEGRATION; exec "$login_shell" -c 'zsh'
+...
+exec_login_shell  # 不带命令时走这里
 ```
 
-krcs 不再被 eval：
+integration 只在 `exec_login_shell` → `exec_zsh_with_integration`（`bootstrap-utils.sh:102-115`）里装配：
 
-```
-map kitty_mod+enter new_window_with_cwd zsh
+```sh
+export KITTY_ORIG_ZDOTDIR="$zdotdir"
+export ZDOTDIR="$shell_integration_dir/zsh"
+exec "$login_shell" "-l"
 ```
 
-代价：该窗口没有 kitty shell integration（`precmd_functions` 里 `_ksi` 计数为 0），不上报 OSC 7 cwd，
-从它再按 `kitty_mod+enter` 就拿不到远端 cwd 了。想用
-`env KITTY_SHELL_INTEGRATION=enabled ZDOTDIR=...` 补回来会失败（`$HOME` 不展开，掉回 grml prompt），
-不要走这条路。
+带命令的分支既 unset 了 `KITTY_SHELL_INTEGRATION`、又不设 `ZDOTDIR`、还是 `-c` 而非 `-l`。
+所以同时失去 integration **和** login shell。
+
+### 实测对比（同一 ssh 窗口开出的两个新窗口）
+
+|  | `new_window_with_cwd` | `new_window_with_cwd zsh` |
+| --- | --- | --- |
+| 窗口内容 | 继承 `nvi` | zsh |
+| `[[ -o login ]]` | `Y` | `N` |
+| `precmd_functions` 里 `_ksi` 个数 | `1` | `0` |
+| `alias edit-in-kitty` | `Y` | `N` |
+| `kitten @ get-text --extent=last_cmd_output` | 有输出 | 空 |
+| 再按一次 `kitty_mod+enter` | 远端窗口 + 远端 cwd | **本地 `/bin/zsh`**，cwd 掉回本地 |
+| 窗口标题 | 当前运行的命令 | grml 的 `user@host: ~/path` |
+
+带 `zsh` 具体丢掉：
+
+1. 链式开窗断在第二跳（OSC 7 不上报 → `modify_argv_for_launch_with_cwd` 拿不到 `reported_cwd`
+   → 不走 ssh 分支 → 新窗口变本地 shell）。
+2. OSC 133 prompt marks 全没：`show_last_command_output`、`scroll_to_prompt`、
+   `get-text --extent=last_cmd_output|last_visited_cmd_output`、点击 prompt 定位光标。
+3. `edit-in-kitty` alias 没了（远端文件用本地 kitty 编辑）。
+4. `clone-in-kitty` 不可用。
+5. `sudo` 的 TERMINFO 包装（`kitty-integration:405+`）没了 → `sudo nvim` 可能撞 terminfo 缺失。
+6. 标题不再随当前命令更新。
+7. 非 login shell → `/etc/zsh/zprofile`（会 `dsource /etc/zsh/zprofile.d`）不执行。
+
+想用 `env KITTY_SHELL_INTEGRATION=enabled ZDOTDIR=...` 把 integration 补回来也失败：
+`$HOME` 不展开，ZDOTDIR 变成字面量，掉回 grml prompt。不要走这条路。
+
+### 结论
+
+绑定保持 `map kitty_mod+enter new_window_with_cwd`（不带 `zsh`）。宁可新窗口继承 `nvi`，
+也不丢上面 7 项。要干净的远端 shell，用 `ben: shell` 那个 tab，或在 nvi 里 `:q` 退回 zsh。
 
 ## 4. `ControlSocket ... already exists, disabling multiplexing`
 
